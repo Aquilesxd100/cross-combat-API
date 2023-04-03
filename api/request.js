@@ -5,7 +5,7 @@ module.exports = async function (req, res) {
             const resposta = await fetch(`https://superheroapi.com/api/2613840595440470/${idAleatorio}`)
             .then((res) => res.json())
             .then(data => data);
-            res.header('Access-Control-Allow-Origin', '*').json(resposta);
+            res.json(resposta);
         }
         catch(error) {
             res.json(error)
