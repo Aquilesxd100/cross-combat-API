@@ -16,6 +16,7 @@ app.use((req : Request, res : Response, next : NextFunction) => {
 app.get('/gerarHerois/:quantidade', (req : Request, res : Response) => {
     const quantidadeHerois : number = Number(req.params.quantidade);
     const heroisGerados : Array<any> = [];
+    console.log(quantidadeHerois)
     if(typeof quantidadeHerois !== `number`) {
         res.status(400).send({ message: "Parametro Informado Incorreto!" })
     };
