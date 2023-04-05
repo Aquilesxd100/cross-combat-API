@@ -1,4 +1,5 @@
 const express = require('express');
+import { Request, Response, NextFunction } from "express";
 
 const PORT = process.env.PORT || 3000;
 const app = express();
@@ -7,12 +8,12 @@ app.listen(
     PORT, () => console.log(`ouvindo porta ${PORT}.`)
 );
 
-app.use((req, res, next) => {
+app.use((req : Request, res : Response, next : NextFunction) => {
     res.header(`Acess-Control-Allow-Origin`, `*`);
     next();
 });
 
-app.get('/gerarHerois/:quantidade', (req, res) => {
+app.get('/gerarHerois/:quantidade', (req : Request, res : Response) => {
     const quantidadeHerois : number = Number(req.params.quantidade);
     const heroisGerados : Array<any> = [];
     if(typeof quantidadeHerois !== `number`) {
