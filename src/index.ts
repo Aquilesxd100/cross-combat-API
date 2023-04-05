@@ -13,23 +13,27 @@ app.use((req : Request, res : Response, next : NextFunction) => {
     next();
 });
 
-app.get('/gerarHerois/:quantidade', (req : Request, res : Response) => {
+app.get('/gerarHerois/:quantidade',  async (req : Request, res : Response) => {
     const quantidadeHerois : number = Number(req.params.quantidade);
     const heroisGerados : Array<any> = [];
-    console.log(quantidadeHerois)
     if(typeof quantidadeHerois !== `number`) {
         res.status(400).send({ message: "Parametro Informado Incorreto!" })
     };
-    while(heroisGerados.length !== quantidadeHerois) {
-        const idAleatorio : number = Math.trunc(Math.random() * 732);
-        fetch(`https://superheroapi.com/api/2613840595440470/${idAleatorio}`)
-        .then((res) => res.json())
-        .then((data) => {
-            if(data.image.url !== undefined && data.image.url !== null) {
-                heroisGerados.push(data);
-            }
-        })
-        .catch(error => console.log(error));
+    const gerarHerois = async function(){
+        while(heroisGerados.length !== quantidadeHerois) {
+            const idAleatorio : number = Math.trunc(Math.random() * 732);
+            await fetch(`https://superheroapi.com/api/2613840595440470/${idAleatorio}`)
+            .then((res) => res.json())
+            .then((data) => {
+                if(data.image.url !== undefined && data.image.url !== null) {
+                    heroisGerados.push(data);
+                }
+                return data;
+            })
+            .catch(error => console.log(error));
+        };
     };
+    await gerarHerois();
     res.status(200).send(heroisGerados);
+    console.log(heroisGerados)
 });
