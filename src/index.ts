@@ -21,7 +21,7 @@ app.get('/gerarHerois/:quantidade',  async (req : Request, res : Response) => {
         const nomeRegistrados : Array<string> = req.body.nomesAtuais;
         const heroisGerados : Array<any> = [];
         if(typeof quantidadeHerois !== `number`) {
-            res.status(400).send({ message: "Parametro Informado Incorreto!" })
+            res.status(400).setHeader("Access-Control-Allow-Origin", "*").send({ message: "Parametro Informado Incorreto!" })
         };
         const gerarHerois = async function(){
             while(heroisGerados.length !== quantidadeHerois) {
@@ -42,9 +42,9 @@ app.get('/gerarHerois/:quantidade',  async (req : Request, res : Response) => {
             };
         };
         await gerarHerois();
-        res.status(200).send(heroisGerados);
+        res.status(200).setHeader("Access-Control-Allow-Origin", "*").send(heroisGerados);
     }
     catch(error) {
-       res.status(400).send({ message: "ERRO"}); 
+       res.status(400).setHeader("Access-Control-Allow-Origin", "*").send({ message: "ERRO"}); 
     }
 });
