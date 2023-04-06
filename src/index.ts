@@ -16,14 +16,12 @@ app.use((req : Request, res : Response, next : NextFunction) => {
 
 app.get('/gerarHerois/:quantidade',  async (req : Request, res : Response) => {
     try {
-        console.log("inicio try");
         const quantidadeHerois : number = Number(req.params.quantidade);
         const heroisGerados : Array<any> = [];
         if(typeof quantidadeHerois !== `number`) {
             res.status(400).send({ message: "Parametro Informado Incorreto!" })
         };
         const gerarHerois = async function(){
-            console.log("funcao async");
             while(heroisGerados.length !== quantidadeHerois) {
                 const idAleatorio : number = Math.trunc(Math.random() * 732);
                 const infosHeroi : any = await fetch(`https://superheroapi.com/api/2613840595440470/${idAleatorio}`)
@@ -37,7 +35,6 @@ app.get('/gerarHerois/:quantidade',  async (req : Request, res : Response) => {
             };
         };
         await gerarHerois();
-        console.log("pos funcao");
         res.status(200).send(heroisGerados);
     }
     catch(error) {
