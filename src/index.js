@@ -8,7 +8,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+const comprimirNome_1 = __importDefault(require("./helpers/comprimirNome"));
 const express = require('express');
 const fetch = require("node-fetch");
 const PORT = process.env.PORT || 3000;
@@ -21,8 +25,10 @@ app.use((req, res, next) => {
 });
 app.get('/gerarHerois/:quantidade', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        console.log("inicio try");
         const quantidadeHerois = Number(req.params.quantidade);
+        const nomeRegistrados = req.body.nomesAtuais;
+        console.log(quantidadeHerois);
+        console.log(nomeRegistrados);
         const heroisGerados = [];
         if (typeof quantidadeHerois !== `number`) {
             res.status(400).send({ message: "Parametro Informado Incorreto!" });
@@ -30,23 +36,26 @@ app.get('/gerarHerois/:quantidade', (req, res) => __awaiter(void 0, void 0, void
         ;
         const gerarHerois = function () {
             return __awaiter(this, void 0, void 0, function* () {
-                console.log("funcao async");
                 while (heroisGerados.length !== quantidadeHerois) {
                     const idAleatorio = Math.trunc(Math.random() * 732);
                     const infosHeroi = yield fetch(`https://superheroapi.com/api/2613840595440470/${idAleatorio}`)
                         .then((res) => res.json())
                         .then((data) => data)
+                        .then((data) => {
+                        data.name = data.name.length > 18 ? (0, comprimirNome_1.default)(data.name) : data.name;
+                        return data;
+                    })
                         .catch((error) => console.log(error));
-                    console.log("teste");
                     if (infosHeroi && infosHeroi.image.url !== undefined && infosHeroi.image.url !== null) {
-                        heroisGerados.push(infosHeroi);
+                        if (!nomeRegistrados.some((nome) => nome === infosHeroi.name)) {
+                            heroisGerados.push(infosHeroi);
+                        }
                     }
                 }
                 ;
             });
         };
         yield gerarHerois();
-        console.log("pos funcao");
         res.status(200).send(heroisGerados);
     }
     catch (error) {

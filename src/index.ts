@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from "express";
+import comprimirNome from "./helpers/comprimirNome";
 const express = require('express');
 const fetch = require("node-fetch");
 
@@ -17,6 +18,7 @@ app.use((req : Request, res : Response, next : NextFunction) => {
 app.get('/gerarHerois/:quantidade',  async (req : Request, res : Response) => {
     try {
         const quantidadeHerois : number = Number(req.params.quantidade);
+        const nomeRegistrados : Array<string> = req.body.nomesAtuais;
         const heroisGerados : Array<any> = [];
         if(typeof quantidadeHerois !== `number`) {
             res.status(400).send({ message: "Parametro Informado Incorreto!" })
@@ -25,12 +27,17 @@ app.get('/gerarHerois/:quantidade',  async (req : Request, res : Response) => {
             while(heroisGerados.length !== quantidadeHerois) {
                 const idAleatorio : number = Math.trunc(Math.random() * 732);
                 const infosHeroi : any = await fetch(`https://superheroapi.com/api/2613840595440470/${idAleatorio}`)
-                .then((res : any) => res.json())
-                .then((data : any) => data)
-                .catch((error : any) => console.log(error));
-                console.log("teste")
+                    .then((res : any) => res.json())
+                    .then((data : any) => data)
+                    .then((data : any) => {
+                        data.name = data.name.length > 18 ? comprimirNome(data.name) : data.name;
+                        return data;
+                    })
+                    .catch((error : any) => console.log(error));
                 if(infosHeroi && infosHeroi.image.url !== undefined && infosHeroi.image.url !== null) {
-                    heroisGerados.push(infosHeroi);
+                    if(!nomeRegistrados.some((nome : string) => nome === infosHeroi.name)) {
+                        heroisGerados.push(infosHeroi);
+                    }
                 }
             };
         };
