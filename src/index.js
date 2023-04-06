@@ -19,30 +19,33 @@ app.use((req, res, next) => {
     next();
 });
 app.get('/gerarHerois/:quantidade', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const quantidadeHerois = Number(req.params.quantidade);
-    const heroisGerados = [];
-    if (typeof quantidadeHerois !== `number`) {
-        res.status(400).send({ message: "Parametro Informado Incorreto!" });
-    }
-    ;
-    const gerarHerois = function () {
-        return __awaiter(this, void 0, void 0, function* () {
-            while (heroisGerados.length !== quantidadeHerois) {
-                const idAleatorio = Math.trunc(Math.random() * 732);
-                yield fetch(`https://superheroapi.com/api/2613840595440470/${idAleatorio}`)
-                    .then((res) => res.json())
-                    .then((data) => {
-                    if (data.image.url !== undefined && data.image.url !== null) {
-                        heroisGerados.push(data);
+    try {
+        const quantidadeHerois = Number(req.params.quantidade);
+        const heroisGerados = [];
+        if (typeof quantidadeHerois !== `number`) {
+            res.status(400).send({ message: "Parametro Informado Incorreto!" });
+        }
+        ;
+        const gerarHerois = function () {
+            return __awaiter(this, void 0, void 0, function* () {
+                while (heroisGerados.length !== quantidadeHerois) {
+                    const idAleatorio = Math.trunc(Math.random() * 732);
+                    const infosHeroi = yield fetch(`https://superheroapi.com/api/2613840595440470/${idAleatorio}`)
+                        .then((res) => res.json())
+                        .then((data) => data)
+                        .catch(error => console.log(error));
+                    if (infosHeroi && infosHeroi.image.url !== undefined && infosHeroi.image.url !== null) {
+                        heroisGerados.push(infosHeroi);
                     }
-                    return data;
-                })
-                    .catch(error => console.log(error));
-            }
-            ;
-        });
-    };
-    yield gerarHerois();
-    res.status(200).send(heroisGerados);
-    console.log(heroisGerados);
+                }
+                ;
+            });
+        };
+        yield gerarHerois();
+        res.status(200).send(heroisGerados);
+        console.log(heroisGerados);
+    }
+    catch (error) {
+        res.status(400).send({ message: "ERRO" });
+    }
 }));
