@@ -22,7 +22,7 @@ app.get('/gerarHerois/:quantidade',  async (req : Request, res : Response) => {
     const gerarHerois = async function(){
         while(heroisGerados.length !== quantidadeHerois) {
             const idAleatorio : number = Math.trunc(Math.random() * 732);
-            await fetch(`https://superheroapi.com/api/2613840595440470/${idAleatorio}`)
+            const gerarCard = await fetch(`https://superheroapi.com/api/2613840595440470/${idAleatorio}`)
             .then((res) => res.json())
             .then((data) => {
                 if(data.image.url !== undefined && data.image.url !== null) {
