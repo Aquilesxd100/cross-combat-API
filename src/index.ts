@@ -20,7 +20,7 @@ app.use((req : Request, res : Response, next : NextFunction) => {
     next();
 });
 
-app.get('/gerarHerois/:quantidade',  async (req : Request, res : Response) => {
+app.post('/gerarHerois/:quantidade',  async (req : Request, res : Response) => {
     try {
         const quantidadeHerois : number = Number(req.params.quantidade);
         const nomeRegistrados : Array<string> = req.body.nomesAtuais;
