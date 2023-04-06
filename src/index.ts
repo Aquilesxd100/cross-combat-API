@@ -1,10 +1,15 @@
 import { Request, Response, NextFunction } from "express";
 import comprimirNome from "./helpers/comprimirNome";
 const express = require('express');
+const cors = require("cors");
 const fetch = require("node-fetch");
 
 const PORT = process.env.PORT || 3000;
 const app = express();
+app.use(cors({
+    origin: "*",
+    methods: []
+}));
 app.use(express.json());
 app.listen(
     PORT, () => console.log(`ouvindo porta ${PORT}.`)
@@ -21,7 +26,7 @@ app.get('/gerarHerois/:quantidade',  async (req : Request, res : Response) => {
         const nomeRegistrados : Array<string> = req.body.nomesAtuais;
         const heroisGerados : Array<any> = [];
         if(typeof quantidadeHerois !== `number`) {
-            res.status(400).setHeader("Access-Control-Allow-Origin", "*").send({ message: "Parametro Informado Incorreto!" })
+            res.status(400).send({ message: "Parametro Informado Incorreto!" })
         };
         const gerarHerois = async function(){
             while(heroisGerados.length !== quantidadeHerois) {
@@ -42,9 +47,9 @@ app.get('/gerarHerois/:quantidade',  async (req : Request, res : Response) => {
             };
         };
         await gerarHerois();
-        res.status(200).setHeader("Access-Control-Allow-Origin", "*").send(heroisGerados);
+        res.status(200).send(heroisGerados);
     }
     catch(error) {
-       res.status(400).setHeader("Access-Control-Allow-Origin", "*").send({ message: "ERRO"}); 
+       res.status(400).send({ message: "ERRO"}); 
     }
 });
