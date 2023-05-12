@@ -1,5 +1,10 @@
 export default async function validHeroIMG(url : string) {
-    return await fetch(url)
+    return await fetch(url, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
     .then((res) => res.json())
     .then((data) => {
         if(data.status < 300) {
