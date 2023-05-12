@@ -22,6 +22,7 @@ app.use((req : Request, res : Response, next : NextFunction) => {
 });
 
 app.post('/gerarHerois/:quantidade',  async (req : Request, res : Response) => {
+    try {
         const quantidadeHerois : number = Number(req.params.quantidade);
         const nomeRegistrados : Array<string> = req.body.nomesAtuais;
         const heroisGerados : Array<any> = [];
@@ -41,7 +42,7 @@ app.post('/gerarHerois/:quantidade',  async (req : Request, res : Response) => {
                     .catch((error : any) => console.log(error));
 
                 const validationIMGTESTE = await validHeroIMG('https://www.superherodb.com/pictures2/portraits/10/100/1187.jpg');
-
+                
                 const validationIMG = await validHeroIMG(infosHeroi.image.url);
                 
                 if(infosHeroi && infosHeroi.image.url !== undefined && infosHeroi.image.url !== null && validationIMG) {
@@ -53,4 +54,8 @@ app.post('/gerarHerois/:quantidade',  async (req : Request, res : Response) => {
         };
         await gerarHerois();
         res.status(200).send(heroisGerados);
-    });
+    }
+    catch(error) {
+       res.status(400).send({ message: "ERRO"}); 
+    }
+});
