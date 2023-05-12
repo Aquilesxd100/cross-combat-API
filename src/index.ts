@@ -41,11 +41,7 @@ app.post('/gerarHerois/:quantidade',  async (req : Request, res : Response) => {
                     })
                     .catch((error : any) => console.log(error));
 
-                const validationIMGTESTE = await validHeroIMG('https://www.superherodb.com/pictures2/portraits/10/100/1187.jpg');
-                console.log(validationIMGTESTE)
                 const validationIMG = await validHeroIMG(infosHeroi.image.url);
-                console.log(validationIMG)
-  /*               const validationIMG = true; */
                 if(infosHeroi && infosHeroi.image.url !== undefined && infosHeroi.image.url !== null && validationIMG) {
                     if(!nomeRegistrados.some((nome : string) => nome === infosHeroi.name)) {
                         heroisGerados.push(infosHeroi);
@@ -58,6 +54,6 @@ app.post('/gerarHerois/:quantidade',  async (req : Request, res : Response) => {
     }
     catch(error) {
         console.log(error)
-       res.status(400).send({ message: "ERRO"}); 
+        res.status(400).send({ message: "ERRO"}); 
     }
 });
