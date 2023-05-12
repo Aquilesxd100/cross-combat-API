@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import comprimirNome from "./helpers/comprimirNome";
+import validHeroIMG from "./helpers/validHeroIMG";
 const express = require('express');
 const cors = require("cors");
 const fetch = require("node-fetch");
@@ -39,7 +40,8 @@ app.post('/gerarHerois/:quantidade',  async (req : Request, res : Response) => {
                         return data;
                     })
                     .catch((error : any) => console.log(error));
-                if(infosHeroi && infosHeroi.image.url !== undefined && infosHeroi.image.url !== null) {
+                const validationIMG = await validHeroIMG(infosHeroi.image.url);
+                if(infosHeroi && infosHeroi.image.url !== undefined && infosHeroi.image.url !== null && validationIMG) {
                     if(!nomeRegistrados.some((nome : string) => nome === infosHeroi.name)) {
                         heroisGerados.push(infosHeroi);
                     }
