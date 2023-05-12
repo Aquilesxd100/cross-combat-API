@@ -40,8 +40,8 @@ app.post('/gerarHerois/:quantidade',  async (req : Request, res : Response) => {
                         return data;
                     })
                     .catch((error : any) => console.log(error));
-                    
-                const validationIMGTESTE = await validHeroIMG('https://www.superherodb.com/pictures2/portraits/10/100/1187.jpg');
+
+/*                 const validationIMGTESTE = await validHeroIMG('https://www.superherodb.com/pictures2/portraits/10/100/1187.jpg'); */
                 
                 const validationIMG = await validHeroIMG(infosHeroi.image.url);
                 
