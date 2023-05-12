@@ -56,6 +56,7 @@ app.post('/gerarHerois/:quantidade',  async (req : Request, res : Response) => {
         res.status(200).send(heroisGerados);
     }
     catch(error) {
+        console.log(error)
        res.status(400).send({ message: "ERRO"}); 
     }
 });
