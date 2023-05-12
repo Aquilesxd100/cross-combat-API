@@ -1,7 +1,7 @@
 export default async function validHeroIMG(url : string) {
-    let validation = false;
     const checkIMG = await fetch(url)
-    .then((res) => {validation = true})
+    .then((res) => true)
+    .catch((err) => false);
     console.log(checkIMG)
-    return validation;
+    return checkIMG;
 };
