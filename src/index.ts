@@ -27,7 +27,7 @@ app.post('/gerarHerois/:quantidade',  async (req : Request, res : Response) => {
         const nomesRegistrados : Array<string> = req.body.nomesAtuais;
         const heroisGerados : Array<any> = [];
         if(typeof quantidadeHerois !== `number`) {
-            return res.status(400).send({ message: "Parametro de quantidade de cards incorreto!" })
+            return res.status(400).send({ message: "Parâmetro de quantidade de cards incorreto!" })
         };
         if(typeof nomesRegistrados !== 'object' || nomesRegistrados.find(nome => typeof nome !== 'string')) {
             return res.status(400).send({ message: "Nomes de cards utilizados invalidos!" });
