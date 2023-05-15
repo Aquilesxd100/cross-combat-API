@@ -37,6 +37,7 @@ app.post('/gerarHerois/:quantidade',  async (req : Request, res : Response) => {
                     .then((res : any) => res.json())
                     .then((data : any) => data)
                     .then((data : any) => {
+                        console.log(data);
                         data.name = data.name.length > 18 ? comprimirNome(data.name) : data.name;
                         return data;
                     })
