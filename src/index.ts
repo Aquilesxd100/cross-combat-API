@@ -27,7 +27,7 @@ app.post('/gerarHerois/:quantidade',  async (req : Request, res : Response) => {
         const nomeRegistrados : Array<string> = req.body.nomesAtuais;
         const heroisGerados : Array<any> = [];
         if(typeof quantidadeHerois !== `number`) {
-            res.status(400).send({ message: "Parametro Informado Incorreto!" })
+            return res.status(400).send({ message: "Parametro Informado Incorreto!" })
         };
         let erroAPI : number = -1;
         const gerarHerois = async function(){
@@ -54,12 +54,12 @@ app.post('/gerarHerois/:quantidade',  async (req : Request, res : Response) => {
         };
         await gerarHerois();
         if (!heroisGerados.length) {
-            res.status(500).send(false);
+            return res.status(500).send(false);
         };
-        res.status(200).send(heroisGerados);
+        return res.status(200).send(heroisGerados);
     }
     catch(error) {
         console.log(error)
-        res.status(400).send({ message: "ERRO"}); 
+        return res.status(400).send({ message: "ERRO"}); 
     }
 });
