@@ -24,10 +24,13 @@ app.use((req : Request, res : Response, next : NextFunction) => {
 app.post('/gerarHerois/:quantidade',  async (req : Request, res : Response) => {
     try {
         const quantidadeHerois : number = Number(req.params.quantidade);
-        const nomeRegistrados : Array<string> = req.body.nomesAtuais;
+        const nomesRegistrados : Array<string> = req.body.nomesAtuais;
         const heroisGerados : Array<any> = [];
         if(typeof quantidadeHerois !== `number`) {
-            return res.status(400).send({ message: "Parametro Informado Incorreto!" })
+            return res.status(400).send({ message: "Parametro de quantidade de cards incorreto!" })
+        };
+        if(typeof nomesRegistrados !== 'object' || nomesRegistrados.find(nome => typeof nome !== 'string')) {
+            return res.status(400).send({ message: "Nomes de cards utilizados invalidos!" });
         };
         let erroAPI : number = -1;
         const gerarHerois = async function(){
@@ -45,7 +48,7 @@ app.post('/gerarHerois/:quantidade',  async (req : Request, res : Response) => {
             
                 if(infosHeroi && infosHeroi.image.url !== undefined && infosHeroi.image.url !== null) {
                     const validationIMG = await validHeroIMG(infosHeroi.image.url);
-                    if(!nomeRegistrados.some((nome : string) => nome === infosHeroi.name) && validationIMG) {
+                    if(!nomesRegistrados.some((nome : string) => nome === infosHeroi.name) && validationIMG) {
                         heroisGerados.push(infosHeroi);
                     }
                 } else {
