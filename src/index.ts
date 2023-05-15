@@ -29,8 +29,9 @@ app.post('/gerarHerois/:quantidade',  async (req : Request, res : Response) => {
         if(typeof quantidadeHerois !== `number`) {
             res.status(400).send({ message: "Parametro Informado Incorreto!" })
         };
+        let erroAPI : number = -1;
         const gerarHerois = async function(){
-            while(heroisGerados.length !== quantidadeHerois) {
+            while(heroisGerados.length !== quantidadeHerois && erroAPI < 18) {
                 const idAleatorio : number = Math.trunc(Math.random() * 732);
                 const infosHeroi : any = await fetch(`https://superheroapi.com/api/2613840595440470/${idAleatorio}`)
                     .then((res : any) => res.json())
@@ -40,16 +41,21 @@ app.post('/gerarHerois/:quantidade',  async (req : Request, res : Response) => {
                         return data;
                     })
                     .catch((error : any) => console.log(error));
-
-                const validationIMG = await validHeroIMG(infosHeroi.image.url);
-                if(infosHeroi && infosHeroi.image.url !== undefined && infosHeroi.image.url !== null && validationIMG) {
-                    if(!nomeRegistrados.some((nome : string) => nome === infosHeroi.name)) {
+            
+                if(infosHeroi && infosHeroi.image.url !== undefined && infosHeroi.image.url !== null) {
+                    const validationIMG = await validHeroIMG(infosHeroi.image.url);
+                    if(!nomeRegistrados.some((nome : string) => nome === infosHeroi.name) && validationIMG) {
                         heroisGerados.push(infosHeroi);
                     }
-                }
+                } else {
+                    erroAPI += 1;
+                };
             };
         };
         await gerarHerois();
+        if (!heroisGerados.length) {
+            res.status(500).send(false);
+        };
         res.status(200).send(heroisGerados);
     }
     catch(error) {
