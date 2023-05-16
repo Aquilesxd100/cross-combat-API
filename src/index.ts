@@ -7,7 +7,7 @@ const express = require('express');
 const cors = require("cors");
 const fetch = require("node-fetch");
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4000;
 const app = express();
 app.use(cors({
     origin: "*",
@@ -54,10 +54,7 @@ app.post('/gerarHerois/:quantidade', validInfosMiddleware, async (req : Request,
                     }
                 })
                     .then((res : any) => {
-                        if (!res.includes("<html")) {
-                            return res.json();
-                        };
-                        return res;
+                        return res.json();
                     })
                     .then((data : any) => data)
                     .then((data : any) => {
@@ -108,10 +105,7 @@ app.post('/gerarPersonagensDisney/:quantidade', validInfosMiddleware, async (req
                     }
                 })
                     .then((res : any) => {
-                        if (!res.includes("<html")) {
-                            return res.json();
-                        };
-                        return res;
+                        return res.json();
                     })
                     .then((data : any) => data.data)
                     .then(async (data : any) => {
@@ -158,10 +152,7 @@ app.post('/gerarPersonagensAnimes/:quantidade', validInfosMiddleware, async (req
                     }
                 })
                     .then((res : any) => {
-                        if (!res.includes("<html")) {
-                            return res.json();
-                        };
-                        return res;
+                        return res.json();
                     })
                     .then((data : any) => {
                         if(data.data) {
