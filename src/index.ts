@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import comprimirNome from "./helpers/comprimirNome";
 import validHeroIMG from "./helpers/validHeroIMG";
 import checkDisneyIMG from "./helpers/checkDisneyIMG";
+import checkJSON from "./helpers/checkJSON";
 
 const express = require('express');
 const cors = require("cors");
@@ -53,7 +54,12 @@ app.post('/gerarHerois/:quantidade', validInfosMiddleware, async (req : Request,
                         "Content-Type" : "application/json"
                     }
                 })
-                    .then((res : any) => res.json())
+                    .then((res : any) => {
+                        if (checkJSON(res)) {
+                            return res.json();
+                        };
+                        return res;
+                    })
                     .then((data : any) => data)
                     .then((data : any) => {
                         if(data && data.name) {
@@ -102,7 +108,12 @@ app.post('/gerarPersonagensDisney/:quantidade', validInfosMiddleware, async (req
                         "Content-Type" : "application/json"
                     }
                 })
-                    .then((res : any) => res.json())
+                    .then((res : any) => {
+                        if (checkJSON(res)) {
+                            return res.json();
+                        };
+                        return res;
+                    })
                     .then((data : any) => data.data)
                     .then(async (data : any) => {
                         if(data && data.imageUrl && data.name) {
@@ -147,7 +158,12 @@ app.post('/gerarPersonagensAnimes/:quantidade', validInfosMiddleware, async (req
                         "Content-Type" : "application/json"
                     }
                 })
-                    .then((res : any) => res.json())
+                    .then((res : any) => {
+                        if (checkJSON(res)) {
+                            return res.json();
+                        };
+                        return res;
+                    })
                     .then((data : any) => {
                         if(data.data) {
                             return data.data;
