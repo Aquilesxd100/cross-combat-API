@@ -62,6 +62,7 @@ app.post('/gerarHerois/:quantidade', validInfosMiddleware, async (req : Request,
                     const validationIMG = await validHeroIMG(infosHeroi.image.url);
                     if(!nomesRegistrados.some((nome : string) => nome === infosHeroi.name) && validationIMG) {
                         heroisGerados.push(infosHeroi);
+                        nomesRegistrados.push(infosHeroi.name);
                     }
                 } else {
                     erroAPI += 1;
@@ -103,6 +104,7 @@ app.post('/gerarPersonagensDisney/:quantidade', validInfosMiddleware, async (req
                     .catch((error : any) => console.log(error));
                 if(infosPersoDisney.imageUrl !== undefined && checkIMG && !nomesRegistrados.some(nome => nome === infosPersoDisney.name)) {
                     cardsGerados.push(infosPersoDisney);
+                    nomesRegistrados.push(infosPersoDisney.name);
                 } else {
                     erroAPI += 1;
                 };
@@ -141,6 +143,7 @@ app.post('/gerarPersonagensAnimes/:quantidade', validInfosMiddleware, async (req
 
                 if(!nomesRegistrados.some(nome => nome === infosPersoAnime.canonicalName)) {
                     cardsGerados.push(infosPersoAnime);
+                    nomesRegistrados.push(infosPersoAnime.canonicalName);
                 } else {
                     erroAPI += 1;
                 };
