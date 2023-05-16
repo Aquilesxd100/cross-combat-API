@@ -140,16 +140,16 @@ app.post('/gerarPersonagensAnimes/:quantidade', validInfosMiddleware, async (req
                         return data;
                     })
                     .then(async (data : any) => {
-                        if(data && data.canonicalName) {
-                            data.canonicalName = data.canonicalName.length > 18 ? comprimirNome(data.canonicalName) : data.canonicalName;
+                        if(data && data.attributes && data.attributes.canonicalName) {
+                            data.attributes.canonicalName = data.attributes.canonicalName.length > 18 ? comprimirNome(data.attributes.canonicalName) : data.attributes.canonicalName;
                         };
                         return data;
                     })
                     .catch((error : any) => console.log(error));
 
-                if (infosPersoAnime.image.original && !nomesRegistrados.some(nome => nome === infosPersoAnime.canonicalName)) {
+                if (infosPersoAnime.image.original && !nomesRegistrados.some(nome => nome === infosPersoAnime.attributes.canonicalName)) {
                     cardsGerados.push(infosPersoAnime);
-                    nomesRegistrados.push(infosPersoAnime.canonicalName);
+                    nomesRegistrados.push(infosPersoAnime.attributes.canonicalName);
                 } else {
                     erroAPI += 1;
                 };
