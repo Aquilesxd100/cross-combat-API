@@ -58,7 +58,7 @@ app.post('/gerarHerois/:quantidade', validInfosMiddleware, async (req : Request,
                     })
                     .catch((error : any) => console.log(error));
             
-                if(infosHeroi && infosHeroi.image.url !== undefined && infosHeroi.image.url !== null) {
+                if(infosHeroi && infosHeroi.image.url) {
                     const validationIMG = await validHeroIMG(infosHeroi.image.url);
                     if(!nomesRegistrados.some((nome : string) => nome === infosHeroi.name) && validationIMG) {
                         heroisGerados.push(infosHeroi);
@@ -102,7 +102,7 @@ app.post('/gerarPersonagensDisney/:quantidade', validInfosMiddleware, async (req
                         return data;
                     })
                     .catch((error : any) => console.log(error));
-                if(infosPersoDisney.imageUrl !== undefined && checkIMG && !nomesRegistrados.some(nome => nome === infosPersoDisney.name)) {
+                if(checkIMG && !nomesRegistrados.some(nome => nome === infosPersoDisney.name)) {
                     cardsGerados.push(infosPersoDisney);
                     nomesRegistrados.push(infosPersoDisney.name);
                 } else {
@@ -133,15 +133,21 @@ app.post('/gerarPersonagensAnimes/:quantidade', validInfosMiddleware, async (req
                 const idAleatorio : number = Math.trunc(Math.random() * 99153);
                 const infosPersoAnime : any = await fetch(`https://kitsu.io/api/edge/characters/${idAleatorio}`)
                     .then((res : any) => res.json())
+                    .then((data : any) => {
+                        if(data.data) {
+                            return data.data;
+                        };
+                        return data;
+                    })
                     .then(async (data : any) => {
-                        if(data && data.canonicalName && data.image.original) {
+                        if(data && data.canonicalName) {
                             data.canonicalName = data.canonicalName.length > 18 ? comprimirNome(data.canonicalName) : data.canonicalName;
                         };
                         return data;
                     })
                     .catch((error : any) => console.log(error));
 
-                if(!nomesRegistrados.some(nome => nome === infosPersoAnime.canonicalName)) {
+                if (infosPersoAnime.image.original && !nomesRegistrados.some(nome => nome === infosPersoAnime.canonicalName)) {
                     cardsGerados.push(infosPersoAnime);
                     nomesRegistrados.push(infosPersoAnime.canonicalName);
                 } else {
