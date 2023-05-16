@@ -148,8 +148,6 @@ app.post('/gerarPersonagensAnimes/:quantidade', validInfosMiddleware, async (req
     try {
         const quantidadeCardsAnimes : number = Number(req.params.quantidade);
         const nomesRegistrados : Array<string> = req.body.nomesAtuais;
-        console.log(nomesRegistrados)
-        console.log(typeof nomesRegistrados)
         const cardsGerados : Array<any> = [];
         let erroAPI : number = -1;
         const gerarPersonagensAnimes = async function(){
