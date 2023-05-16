@@ -35,14 +35,13 @@ const validInfosMiddleware = ((req : Request, res : Response, next : NextFunctio
     if(!Array.isArray(nomesRegistrados) || nomesRegistrados.find(nome => typeof nome !== 'string')) {
         return res.status(400).send({ message: "Nomes de cards utilizados invalidos!" });
     };
-    req.body = JSON.parse(req.body);
     next();
 });
 
 app.post('/gerarHerois/:quantidade', validInfosMiddleware, async (req : Request, res : Response) => {
     try {
         const quantidadeHerois : number = Number(req.params.quantidade);
-        const nomesRegistrados : Array<string> = req.body.nomesAtuais;
+        const nomesRegistrados : Array<string> = JSON.parse(req.body.nomesAtuais);
         const heroisGerados : Array<any> = [];
         let erroAPI : number = -1;
         const gerarHerois = async function(){
@@ -90,7 +89,7 @@ app.post('/gerarHerois/:quantidade', validInfosMiddleware, async (req : Request,
 app.post('/gerarPersonagensDisney/:quantidade', validInfosMiddleware, async (req : Request, res : Response) => {
     try {
         const quantidadeCardsDisney : number = Number(req.params.quantidade);
-        const nomesRegistrados : Array<string> = req.body.nomesAtuais;
+        const nomesRegistrados : Array<string> = JSON.parse(req.body.nomesAtuais);
         const cardsGerados : Array<any> = [];
         let erroAPI : number = -1;
         const gerarPersonagensDisney = async function(){
@@ -136,7 +135,7 @@ app.post('/gerarPersonagensDisney/:quantidade', validInfosMiddleware, async (req
 app.post('/gerarPersonagensAnimes/:quantidade', validInfosMiddleware, async (req : Request, res : Response) => {
     try {
         const quantidadeCardsAnimes : number = Number(req.params.quantidade);
-        const nomesRegistrados : Array<string> = req.body.nomesAtuais;
+        const nomesRegistrados : Array<string> = JSON.parse(req.body.nomesAtuais);
         const cardsGerados : Array<any> = [];
         let erroAPI : number = -1;
         const gerarPersonagensAnimes = async function(){
