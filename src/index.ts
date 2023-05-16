@@ -146,7 +146,7 @@ app.post('/gerarPersonagensAnimes/:quantidade', validInfosMiddleware, async (req
                         return data;
                     })
                     .catch((error : any) => console.log(error));
-                if (infosPersoAnime.attributes && infosPersoAnime.attributes.image && infosPersoAnime.attributes.image.original && infosPersoAnime.attributes.canonicalName && !nomesRegistrados.some(nome => nome === infosPersoAnime.attributes.canonicalName)) {
+                if (infosPersoAnime && infosPersoAnime.attributes && infosPersoAnime.attributes.image && infosPersoAnime.attributes.image.original && infosPersoAnime.attributes.canonicalName && !nomesRegistrados.some(nome => nome === infosPersoAnime.attributes.canonicalName)) {
                     cardsGerados.push(infosPersoAnime);
                     nomesRegistrados.push(infosPersoAnime.attributes.canonicalName);
                 } else {
