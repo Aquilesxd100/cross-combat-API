@@ -35,6 +35,7 @@ const validInfosMiddleware = ((req : Request, res : Response, next : NextFunctio
     if(!Array.isArray(nomesRegistrados) || nomesRegistrados.find(nome => typeof nome !== 'string')) {
         return res.status(400).send({ message: "Nomes de cards utilizados invalidos!" });
     };
+    req.body = JSON.parse(req.body);
     next();
 });
 
@@ -47,7 +48,12 @@ app.post('/gerarHerois/:quantidade', validInfosMiddleware, async (req : Request,
         const gerarHerois = async function(){
             while(heroisGerados.length !== quantidadeHerois && erroAPI < 18) {
                 const idAleatorio : number = Math.trunc(Math.random() * 732);
-                const infosHeroi : any = await fetch(`https://superheroapi.com/api/2613840595440470/${idAleatorio}`)
+                const infosHeroi : any = await fetch(`https://superheroapi.com/api/2613840595440470/${idAleatorio}`, {
+                    method: 'GET',
+                    headers: {
+                        "Content-Type" : "application/json"
+                    }
+                })
                     .then((res : any) => res.json())
                     .then((data : any) => data)
                     .then((data : any) => {
@@ -91,7 +97,12 @@ app.post('/gerarPersonagensDisney/:quantidade', validInfosMiddleware, async (req
             while(cardsGerados.length !== quantidadeCardsDisney && erroAPI < 40) {
                 const idAleatorio : number = Math.trunc(Math.random() * 7438);
                 let checkIMG : any = false;
-                const infosPersoDisney : any = await fetch(`https://api.disneyapi.dev/character/${idAleatorio}`)
+                const infosPersoDisney : any = await fetch(`https://api.disneyapi.dev/character/${idAleatorio}`, {
+                    method: 'GET',
+                    headers: {
+                        "Content-Type" : "application/json"
+                    }
+                })
                     .then((res : any) => res.json())
                     .then((data : any) => data.data)
                     .then(async (data : any) => {
@@ -131,7 +142,12 @@ app.post('/gerarPersonagensAnimes/:quantidade', validInfosMiddleware, async (req
         const gerarPersonagensAnimes = async function(){
             while(cardsGerados.length !== quantidadeCardsAnimes && erroAPI < 20) {
                 const idAleatorio : number = Math.trunc(Math.random() * 99153);
-                const infosPersoAnime : any = await fetch(`https://kitsu.io/api/edge/characters/${idAleatorio}`)
+                const infosPersoAnime : any = await fetch(`https://kitsu.io/api/edge/characters/${idAleatorio}`, {
+                    method: 'GET',
+                    headers: {
+                        "Content-Type" : "application/json"
+                    }
+                })
                     .then((res : any) => res.json())
                     .then((data : any) => {
                         if(data.data) {
