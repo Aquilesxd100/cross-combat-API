@@ -53,6 +53,7 @@ app.post('/gerarHerois/:quantidade', validInfosMiddleware, async (req : Request,
                         "Content-Type" : "application/json"
                     }
                 })
+                    .then((res : any) => res.text())
                     .then((res : any) => {
                         if (res.startsWith('<')) {
                             return res;
@@ -107,6 +108,7 @@ app.post('/gerarPersonagensDisney/:quantidade', validInfosMiddleware, async (req
                         "Content-Type" : "application/json"
                     }
                 })
+                    .then((res : any) => res.text())
                     .then((res : any) => {
                         if (res.startsWith('<')) {
                             return res;
@@ -159,6 +161,7 @@ app.post('/gerarPersonagensAnimes/:quantidade', validInfosMiddleware, async (req
                         "Content-Type" : "application/json"
                     }
                 })
+                    .then((res : any) => res.text())
                     .then((res : any) => {
                         if (res.startsWith('<')) {
                             return res;
