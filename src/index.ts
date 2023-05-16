@@ -75,7 +75,7 @@ app.post('/gerarHerois/:quantidade', validInfosMiddleware, async (req : Request,
             };
         };
         await gerarHerois();
-        if (!heroisGerados.length) {
+        if (!heroisGerados.length || heroisGerados.length !== quantidadeHerois) {
             return res.status(500).send(false);
         };
         return res.status(200).send(heroisGerados);
@@ -121,7 +121,7 @@ app.post('/gerarPersonagensDisney/:quantidade', validInfosMiddleware, async (req
             };
         };
         await gerarPersonagensDisney();
-        if (!cardsGerados.length) {
+        if (!cardsGerados.length || cardsGerados.length !== quantidadeCardsDisney) {
             return res.status(500).send(false);
         };
         return res.status(200).send(cardsGerados);
@@ -170,7 +170,7 @@ app.post('/gerarPersonagensAnimes/:quantidade', validInfosMiddleware, async (req
             };
         };
         await gerarPersonagensAnimes();
-        if (!cardsGerados.length) {
+        if (!cardsGerados.length || cardsGerados.length !== quantidadeCardsAnimes) {
             return res.status(500).send(false);
         };
         return res.status(200).send(cardsGerados);
