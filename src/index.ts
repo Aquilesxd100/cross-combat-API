@@ -2,7 +2,6 @@ import { Request, Response, NextFunction } from "express";
 import comprimirNome from "./helpers/comprimirNome";
 import validHeroIMG from "./helpers/validHeroIMG";
 import checkDisneyIMG from "./helpers/checkDisneyIMG";
-import checkJSON from "./helpers/checkJSON";
 
 const express = require('express');
 const cors = require("cors");
@@ -55,7 +54,7 @@ app.post('/gerarHerois/:quantidade', validInfosMiddleware, async (req : Request,
                     }
                 })
                     .then((res : any) => {
-                        if (checkJSON(res)) {
+                        if (res.isJSON()) {
                             return res.json();
                         };
                         return res;
@@ -109,7 +108,7 @@ app.post('/gerarPersonagensDisney/:quantidade', validInfosMiddleware, async (req
                     }
                 })
                     .then((res : any) => {
-                        if (checkJSON(res)) {
+                        if (res.isJSON()) {
                             return res.json();
                         };
                         return res;
@@ -159,7 +158,7 @@ app.post('/gerarPersonagensAnimes/:quantidade', validInfosMiddleware, async (req
                     }
                 })
                     .then((res : any) => {
-                        if (checkJSON(res)) {
+                        if (res.isJSON()) {
                             return res.json();
                         };
                         return res;
