@@ -4,6 +4,7 @@ import validHeroIMG from "./helpers/validHeroIMG";
 import checkDisneyIMG from "./helpers/checkDisneyIMG";
 import testarConexaoController from "./controllers/testarConexaoController";
 import gerarHeroisController from "./controllers/gerarHeroisController";
+import gerarDisneyController from "./controllers/gerarDisneyController";
 
 const express = require('express');
 const cors = require("cors");
@@ -42,57 +43,7 @@ const validInfosMiddleware = ((req : Request, res : Response, next : NextFunctio
 
 app.post('/gerarHerois/:quantidade', validInfosMiddleware, gerarHeroisController);
 
-app.post('/gerarPersonagensDisney/:quantidade', validInfosMiddleware, async (req : Request, res : Response) => {
-    try {
-        const quantidadeCardsDisney : number = Number(req.params.quantidade);
-        const nomesRegistrados : Array<string> = req.body.nomesAtuais;
-        const cardsGerados : Array<any> = [];
-        let erroAPI : number = -1;
-        const gerarPersonagensDisney = async function(){
-            while(cardsGerados.length !== quantidadeCardsDisney && erroAPI < 40) {
-                const idAleatorio : number = Math.trunc(Math.random() * 7438);
-                let checkIMG : any = false;
-                const infosPersoDisney : any = await fetch(`https://api.disneyapi.dev/character/${idAleatorio}`, {
-                    method: 'GET',
-                    headers: {
-                        "Content-Type" : "application/json"
-                    }
-                })
-                    .then((res : any) => res.text())
-                    .then((res : any) => {
-                        if (res.startsWith('<')) {
-                            return res;
-                        };
-                        return JSON.parse(res);
-                    })
-                    .then((data : any) => data.data)
-                    .then(async (data : any) => {
-                        if(data && data.imageUrl && data.name) {
-                            checkIMG = await checkDisneyIMG(data.imageUrl);
-                            data.name = data.name.length > 18 ? comprimirNome(data.name) : data.name;
-                        };
-                        return data;
-                    })
-                    .catch((error : any) => console.log(error));
-                if(checkIMG && infosPersoDisney.name && !nomesRegistrados.some(nome => nome === infosPersoDisney.name)) {
-                    cardsGerados.push(infosPersoDisney);
-                    nomesRegistrados.push(infosPersoDisney.name);
-                } else {
-                    erroAPI += 1;
-                };
-            };
-        };
-        await gerarPersonagensDisney();
-        if (!cardsGerados.length || cardsGerados.length !== quantidadeCardsDisney) {
-            return res.status(500).send(false);
-        };
-        return res.status(200).send(cardsGerados);
-    }
-    catch(error) {
-        console.log(error)
-        return res.status(400).send({ message: "ERRO"}); 
-    }
-});
+app.post('/gerarPersonagensDisney/:quantidade', validInfosMiddleware, gerarDisneyController);
 
 app.post('/gerarPersonagensAnimes/:quantidade', validInfosMiddleware, async (req : Request, res : Response) => {
     try {
