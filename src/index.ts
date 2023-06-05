@@ -3,6 +3,7 @@ import testarConexaoController from "./controllers/testarConexaoController";
 import gerarHeroisController from "./controllers/gerarHeroisController";
 import gerarDisneyController from "./controllers/gerarDisneyController";
 import gerarAnimesController from "./controllers/gerarAnimesController";
+import validInfosMiddleware from "./middlewares/validInfosMiddleware";
 
 const express = require('express');
 const cors = require("cors");
@@ -20,21 +21,6 @@ app.listen(
 
 app.use((req : Request, res : Response, next : NextFunction) => {
     res.header(`Acess-Control-Allow-Origin`, `*`);
-    next();
-});
-
-const validInfosMiddleware = ((req : Request, res : Response, next : NextFunction) => {
-    const quantidadeHerois : number = Number(req.params.quantidade);
-    const nomesRegistrados : Array<string> = req.body.nomesAtuais;
-    if(isNaN(quantidadeHerois)) {
-        return res.status(400).send({ message: "Parâmetro de quantidade de cards incorreto!" })
-    };
-    if(quantidadeHerois <= 0 || quantidadeHerois > 3) {
-        return res.status(400).send({ message: "Parâmetro de quantidade de cards deve ser de no minimo um e no maximo três!" })
-    };
-    if(!Array.isArray(nomesRegistrados) || nomesRegistrados.find(nome => typeof nome !== 'string')) {
-        return res.status(400).send({ message: "Nomes de cards utilizados invalidos!" });
-    };
     next();
 });
 
