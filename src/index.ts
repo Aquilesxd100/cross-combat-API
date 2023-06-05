@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import comprimirNome from "./helpers/comprimirNome";
 import validHeroIMG from "./helpers/validHeroIMG";
 import checkDisneyIMG from "./helpers/checkDisneyIMG";
+import testarConexaoController from "./controllers/testarConexaoController";
 
 const express = require('express');
 const cors = require("cors");
@@ -198,3 +199,5 @@ app.post('/gerarPersonagensAnimes/:quantidade', validInfosMiddleware, async (req
         return res.status(400).send({ message: "ERRO"}); 
     }
 });
+
+app.post('/testarconexao', testarConexaoController);
