@@ -1,3 +1,4 @@
+const fetch = require("node-fetch");
 import comprimirNome from "../helpers/comprimirNome";
 import validHeroIMG from "../helpers/validHeroIMG";
 
