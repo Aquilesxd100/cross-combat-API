@@ -3,6 +3,7 @@ import comprimirNome from "./helpers/comprimirNome";
 import validHeroIMG from "./helpers/validHeroIMG";
 import checkDisneyIMG from "./helpers/checkDisneyIMG";
 import testarConexaoController from "./controllers/testarConexaoController";
+import gerarHeroisController from "./controllers/gerarHeroisController";
 
 const express = require('express');
 const cors = require("cors");
@@ -39,59 +40,7 @@ const validInfosMiddleware = ((req : Request, res : Response, next : NextFunctio
     next();
 });
 
-app.post('/gerarHerois/:quantidade', validInfosMiddleware, async (req : Request, res : Response) => {
-    try {
-        const quantidadeHerois : number = Number(req.params.quantidade);
-        const nomesRegistrados : Array<string> = req.body.nomesAtuais;
-        const heroisGerados : Array<any> = [];
-        let erroAPI : number = -1;
-        const gerarHerois = async function(){
-            while(heroisGerados.length !== quantidadeHerois && erroAPI < 18) {
-                const idAleatorio : number = Math.trunc(Math.random() * 732);
-                const infosHeroi : any = await fetch(`https://superheroapi.com/api/2613840595440470/${idAleatorio}`, {
-                    method: 'GET',
-                    headers: {
-                        "Content-Type" : "application/json"
-                    }
-                })
-                    .then((res : any) => res.text())
-                    .then((res : any) => {
-                        if (res.startsWith('<')) {
-                            return res;
-                        };
-                        return JSON.parse(res);
-                    })
-                    .then((data : any) => data)
-                    .then((data : any) => {
-                        if(data && data.name) {
-                            data.name = data.name.length > 18 ? comprimirNome(data.name) : data.name;
-                        }
-                        return data;
-                    })
-                    .catch((error : any) => console.log(error));
-            
-                if(infosHeroi && infosHeroi.image && infosHeroi.image.url) {
-                    const validationIMG = await validHeroIMG(infosHeroi.image.url);
-                    if(!nomesRegistrados.some((nome : string) => nome === infosHeroi.name) && validationIMG) {
-                        heroisGerados.push(infosHeroi);
-                        nomesRegistrados.push(infosHeroi.name);
-                    }
-                } else {
-                    erroAPI += 1;
-                };
-            };
-        };
-        await gerarHerois();
-        if (!heroisGerados.length || heroisGerados.length !== quantidadeHerois) {
-            return res.status(500).send(false);
-        };
-        return res.status(200).send(heroisGerados);
-    }
-    catch(error) {
-        console.log(error)
-        return res.status(400).send({ message: "ERRO"}); 
-    }
-});
+app.post('/gerarHerois/:quantidade', validInfosMiddleware, gerarHeroisController);
 
 app.post('/gerarPersonagensDisney/:quantidade', validInfosMiddleware, async (req : Request, res : Response) => {
     try {
