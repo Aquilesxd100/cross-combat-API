@@ -14,21 +14,21 @@ export default async function completarCardsController
         };
 
         while (cardsHeroi) {
-            const cardHeroi : any = await gerarHeroisUC(nomesAtuais, 1);
+            const cardHeroi : any = (await gerarHeroisUC(nomesAtuais, 1))[0];
             resposta.cardsHeroi.push(cardHeroi);
             cardsHeroi -= 1;
             nomesAtuais.push(cardHeroi.name);
         };
 
         while (cardsDisney) {
-            const cardDisney : any = await gerarDisneyUC(nomesAtuais, 1);
+            const cardDisney : any = (await gerarDisneyUC(nomesAtuais, 1))[0];
             resposta.cardsDisney.push(cardDisney);
             cardsDisney -= 1;
             nomesAtuais.push(cardDisney.name);
         };
 
         while (cardsAnime) {
-            const cardAnime : any = await gerarAnimesUC(nomesAtuais, 1);
+            const cardAnime : any = (await gerarAnimesUC(nomesAtuais, 1))[0];
             resposta.cardsAnime.push(cardAnime);
             cardsAnime -= 1;
             nomesAtuais.push(cardAnime.canonicalName);
