@@ -4,6 +4,8 @@ import gerarHeroisController from "./controllers/gerarHeroisController";
 import gerarDisneyController from "./controllers/gerarDisneyController";
 import gerarAnimesController from "./controllers/gerarAnimesController";
 import validInfosMiddleware from "./middlewares/validInfosMiddleware";
+import validFillInfosMiddleware from "./middlewares/validFillInfosMiddleware";
+import completarCardsController from "./controllers/completarCardsController";
 
 const express = require('express');
 const cors = require("cors");
@@ -30,4 +32,6 @@ app.post('/gerarPersonagensDisney/:quantidade', validInfosMiddleware, gerarDisne
 
 app.post('/gerarPersonagensAnimes/:quantidade', validInfosMiddleware, gerarAnimesController);
 
-app.post('/testarconexao', testarConexaoController);
+app.post('/completarTimes', validFillInfosMiddleware, completarCardsController)
+
+app.post('/testarConexao', testarConexaoController);
