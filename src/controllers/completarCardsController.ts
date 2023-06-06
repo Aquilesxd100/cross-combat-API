@@ -29,14 +29,15 @@ export default async function completarCardsController
 
         while (cardsAnime) {
             const cardAnime : any = await gerarAnimesUC(nomesAtuais, 1);
-            resposta.cardsDisney.push(cardAnime);
+            resposta.cardsAnime.push(cardAnime);
             cardsAnime -= 1;
-            nomesAtuais.push(cardAnime.attributes.canonicalName);
+            nomesAtuais.push(cardAnime.canonicalName);
         };
 
         return res.status(200).send(resposta);
 
     } catch (error) {
+        console.log(error)
         return res.status(400).send({
             message: "ERRO!"
         });
