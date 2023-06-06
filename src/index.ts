@@ -34,4 +34,4 @@ app.post('/gerarPersonagensAnimes/:quantidade', validInfosMiddleware, gerarAnime
 
 app.post('/completarTimes', validFillInfosMiddleware, completarCardsController)
 
-app.post('/testarConexao', testarConexaoController);
+app.get('/testarConexao', testarConexaoController);
