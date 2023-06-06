@@ -18,12 +18,12 @@ export default async function testarConexaoController
         });
 
         const promiseHerois = new Promise(async (resolve, reject) => {
-            cardHeroi = gerarHeroisUC([], 1)
+            cardHeroi = await gerarHeroisUC([], 1)
             resolve(true)
         });
 
         const promiseAnimes = new Promise(async (resolve, reject) => {
-            cardAnimes = gerarAnimesUC([], 1)
+            cardAnimes = await gerarAnimesUC([], 1)
             resolve(true)
         });
 
@@ -33,7 +33,7 @@ export default async function testarConexaoController
             promiseHerois,
             promiseAnimes
         ]);
-
+        
         if (cardDisney.length && cardHeroi.length && cardAnimes.length) {
             return res.status(200).send({
                 message: "Conectado!"
