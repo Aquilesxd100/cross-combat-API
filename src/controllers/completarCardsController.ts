@@ -6,7 +6,7 @@ import gerarAnimesUC from "../useCases/gerarAnimesUC";
 export default async function completarCardsController
 (req: Request, res: Response) {
     try {
-        let { cardsHeroi, cardsDisney, cardsAnime, arrayNomes } = req.body;
+        let { cardsHeroi, cardsDisney, cardsAnime, nomesAtuais } = req.body;
         const resposta : any = {
             cardsAnime: [],
             cardsDisney: [],
@@ -14,24 +14,24 @@ export default async function completarCardsController
         };
 
         while (cardsHeroi) {
-            const cardHeroi : any = await gerarHeroisUC(arrayNomes, 1);
+            const cardHeroi : any = await gerarHeroisUC(nomesAtuais, 1);
             resposta.cardsHeroi.push(cardHeroi);
             cardsHeroi -= 1;
-            arrayNomes.push(cardHeroi.name);
+            nomesAtuais.push(cardHeroi.name);
         };
 
         while (cardsDisney) {
-            const cardDisney : any = await gerarDisneyUC(arrayNomes, 1);
+            const cardDisney : any = await gerarDisneyUC(nomesAtuais, 1);
             resposta.cardsDisney.push(cardDisney);
             cardsDisney -= 1;
-            arrayNomes.push(cardDisney.name);
+            nomesAtuais.push(cardDisney.name);
         };
 
         while (cardsAnime) {
-            const cardAnime : any = await gerarAnimesUC(arrayNomes, 1);
+            const cardAnime : any = await gerarAnimesUC(nomesAtuais, 1);
             resposta.cardsDisney.push(cardAnime);
             cardsAnime -= 1;
-            arrayNomes.push(cardAnime.attributes.canonicalName);
+            nomesAtuais.push(cardAnime.attributes.canonicalName);
         };
 
         return res.status(200).send(resposta);

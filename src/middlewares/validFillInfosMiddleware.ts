@@ -2,10 +2,10 @@ import { NextFunction, Request, Response } from "express";
 
 export default function validFillInfosMiddleware
 (req: Request, res: Response, next : NextFunction) {
-    const { cardsHeroi, cardsDisney, cardsAnime, arrayNomes } = req.body;
+    const { cardsHeroi, cardsDisney, cardsAnime, nomesAtuais } = req.body;
     const arrayInfos = [cardsHeroi, cardsDisney, cardsAnime];
 
-    if (!Array.isArray(arrayNomes) || arrayNomes.length > 5 || arrayNomes.some((nome) => typeof nome !== "string")) {
+    if (!Array.isArray(nomesAtuais) || nomesAtuais.length > 5 || nomesAtuais.some((nome) => typeof nome !== "string")) {
         return res.status(400).send({
             message: "Array de nomes invalido."
         })
