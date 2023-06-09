@@ -12,26 +12,14 @@ export default async function testarConexaoController
         let cardAnimes : any = [];   
 
 
-        const promiseDisney = new Promise(async (resolve, reject) => {
-            cardDisney = await gerarDisneyUC([], 1)
-            resolve(true)
-        });
-
-        const promiseHerois = new Promise(async (resolve, reject) => {
-            cardHeroi = await gerarHeroisUC([], 1)
-            resolve(true)
-        });
-
-        const promiseAnimes = new Promise(async (resolve, reject) => {
-            cardAnimes = await gerarAnimesUC([], 1)
-            resolve(true)
-        });
-
-
-        await Promise.all([
-            promiseDisney,
-            promiseHerois,
-            promiseAnimes
+        const promiseDisney = gerarDisneyUC([], 1);
+        const promiseHerois = gerarHeroisUC([], 1);
+        const promiseAnimes = gerarAnimesUC([], 1);
+    
+        [cardDisney, cardHeroi, cardAnimes] = await Promise.all([
+          promiseDisney,
+          promiseHerois,
+          promiseAnimes
         ]);
         
         if (cardDisney.length && cardHeroi.length && cardAnimes.length) {
