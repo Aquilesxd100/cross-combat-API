@@ -17,7 +17,7 @@ export default async function completarCardsController
             const cardHeroi : any = (await gerarHeroisUC(nomesAtuais, 1))[0];
             resposta.cardsHeroi.push(cardHeroi);
             cardsHeroi -= 1;
-            if(cardHeroi) throw new Error;
+            if(!cardHeroi) throw new Error;
             nomesAtuais.push(cardHeroi.name);
         };
 
@@ -25,7 +25,7 @@ export default async function completarCardsController
             const cardDisney : any = (await gerarDisneyUC(nomesAtuais, 1))[0];
             resposta.cardsDisney.push(cardDisney);
             cardsDisney -= 1;
-            if(cardDisney) throw new Error;
+            if(!cardDisney) throw new Error;
             nomesAtuais.push(cardDisney.name);
         };
 
