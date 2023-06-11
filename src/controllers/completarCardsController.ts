@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import gerarHeroisUC from "../useCases/gerarHeroisUC";
 import gerarDisneyUC from "../useCases/gerarDisneyUC";
 import gerarAnimesUC from "../useCases/gerarAnimesUC";
+import { APIDefaultError } from "../helpers/errors/APIDefaultError";
 
 export default async function completarCardsController
 (req: Request, res: Response) {
@@ -17,7 +18,7 @@ export default async function completarCardsController
             const cardHeroi : any = (await gerarHeroisUC(nomesAtuais, 1))[0];
             resposta.cardsHeroi.push(cardHeroi);
             cardsHeroi -= 1;
-            if(!cardHeroi) throw new Error;
+            if(!cardHeroi) throw new APIDefaultError("API de Heróis com defeito.");
             nomesAtuais.push(cardHeroi.name);
         };
 
@@ -25,7 +26,7 @@ export default async function completarCardsController
             const cardDisney : any = (await gerarDisneyUC(nomesAtuais, 1))[0];
             resposta.cardsDisney.push(cardDisney);
             cardsDisney -= 1;
-            if(!cardDisney) throw new Error;
+            if(!cardDisney) throw new APIDefaultError("API da Disney com defeito.");
             nomesAtuais.push(cardDisney.name);
         };
 
@@ -33,7 +34,7 @@ export default async function completarCardsController
             const cardAnime : any = (await gerarAnimesUC(nomesAtuais, 1))[0];
             resposta.cardsAnime.push(cardAnime);
             cardsAnime -= 1;
-            if(!cardAnime) throw new Error;
+            if(!cardAnime) throw new APIDefaultError("API de Animes com defeito.");
             nomesAtuais.push(cardAnime.canonicalName);
         };
 
@@ -41,6 +42,11 @@ export default async function completarCardsController
 
     } catch (error) {
         console.log(error)
+        if (error instanceof APIDefaultError) {
+            return res.status(500).send({
+                message: error.message
+            });
+        };
         return res.status(400).send({
             message: "ERRO!"
         });

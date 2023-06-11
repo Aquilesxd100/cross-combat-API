@@ -1,0 +1,1 @@
+export class APIDefaultError extends Error {};
